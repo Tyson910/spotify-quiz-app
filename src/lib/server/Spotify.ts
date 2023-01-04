@@ -52,3 +52,23 @@ async function fetchFromSpotify<Type>(query: string): Promise<Type> {
 
   return response.json();
 }
+
+async function findArtist(
+  artistQuery: string,
+): Promise<SpotifyApi.ArtistObjectFull[]> {
+  try {
+    // %20tag:hipster add
+    const response: SpotifyApi.ArtistSearchResponse = await fetchFromSpotify(
+      `/search?type=artist&limit=5&q=${encodeURIComponent(artistQuery)}`,
+    );
+    if (!response?.artists?.items || response.artists.items.length < 1) {
+      throw new Error("Artist couldnt be found");
+    }
+    return response.artists.items.sort((a, b) => b.popularity - a.popularity);
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+}
+
+export { fetchFromSpotify, findArtist };
