@@ -29,3 +29,26 @@ async function getAccessToken(): Promise<string | null> {
   }
 }
 
+async function fetchFromSpotify<Type>(query: string): Promise<Type> {
+  if (!query.startsWith("/")) {
+    throw new Error(
+      "Invalid query! Please make sure query string begins with a '/' ",
+    );
+  }
+
+  const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
+  const accessToken = await getAccessToken();
+
+  if (!accessToken) throw new Error("Couldn't generate valid access token!");
+
+  const response = await fetch(SPOTIFY_API_ENDPOINT + query, {
+    headers: {
+      "Authorization": "Bearer " + accessToken,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status != 200) throw new Error("ERROR! Probably Auth issue");
+
+  return response.json();
+}
