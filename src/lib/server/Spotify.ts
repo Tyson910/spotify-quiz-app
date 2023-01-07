@@ -95,3 +95,23 @@ async function getArtistTracks(
     return [];
   }
 }
+
+async function getTopTracksFromArtist(
+  artistID: SpotifyApi.ArtistObjectFull["id"],
+): Promise<SpotifyApi.ArtistsTopTracksResponse["tracks"]> {
+  try {
+    // %20tag:hipster add
+    const { tracks }: SpotifyApi.ArtistsTopTracksResponse =
+      await fetchFromSpotify(
+        `/artists/${artistID}/top-tracks?market=US`,
+      );
+    if (!tracks || tracks?.length < 1) {
+      throw new Error("Artist top tracks couldnt be found");
+    }
+    // TODO: filter out any tracks that dont include a preview id
+    return tracks;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+}
