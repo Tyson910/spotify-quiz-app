@@ -115,3 +115,19 @@ async function getTopTracksFromArtist(
     return [];
   }
 }
+
+function removeDuplicateTracks(
+  tracks: SpotifyApi.TrackObjectFull[],
+): SpotifyApi.TrackObjectFull[] {
+  const trackNames = tracks.map(({ name }) => name);
+  const removeDupeTracks = tracks.filter(({ name }, i) =>
+    !trackNames.includes(name, i + 1)
+  );
+  return removeDupeTracks;
+}
+
+export {
+  fetchFromSpotify,
+  findArtist,
+  getTopTracksFromArtist,
+};
