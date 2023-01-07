@@ -71,4 +71,27 @@ async function findArtist(
   }
 }
 
-export { fetchFromSpotify, findArtist };
+async function getArtistTracks(
+  artistName: string,
+): Promise<SpotifyApi.TrackObjectFull[]> {
+  try {
+    // %20tag:hipster add
+    const response: SpotifyApi.TrackSearchResponse = await fetchFromSpotify(
+      `/search?type=tracks&limit=50&q=${encodeURIComponent(artistName)}`,
+    );
+    if (!response?.tracks?.items || response.tracks.items.length < 1) {
+      throw new Error("Artist couldnt be found");
+    }
+    response.tracks.items = removeDuplicateTracks(response.tracks.items);
+    // fetching 50 tracks and removing duplicates, game should be good with at least 20-25 songs,
+    // v suprising if an artist doesn't have at least 20 songs
+    if (response.tracks.items.length < 20) {
+      throw new Error("Not enough songs found to play a game");
+    }
+    return response.tracks.items;
+    // return response.tracks.items.sort((a, b) => b.popularity - a.popularity);
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+}
