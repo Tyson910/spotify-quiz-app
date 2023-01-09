@@ -7,8 +7,9 @@ export const actions: Actions = {
     const data = await event.request.formData();
     const userSearchInput = data.get("artist-search");
     if (
-      !userSearchInput || typeof userSearchInput != "string" ||
-      typeof userSearchInput != "number"
+      !userSearchInput ||
+      typeof userSearchInput != "string" &&
+        typeof userSearchInput != "number"
     ) {
       return fail(400, { userSearchInput, missing: true });
     }
