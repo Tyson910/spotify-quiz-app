@@ -15,6 +15,7 @@ export const actions: Actions = {
     }
 
     try {
+      // TODO: find a way to cache recent/popular responses
       const artists = await findArtist(userSearchInput.toString());
       return { missing: false, artists };
     } catch (error) {
