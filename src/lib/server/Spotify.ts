@@ -58,7 +58,7 @@ async function findArtist(
 ): Promise<SpotifyApi.ArtistObjectFull[]> {
   try {
     // %20tag:hipster add
-    const response: SpotifyApi.ArtistSearchResponse & SpotifyApi.TrackSearchResponse = await fetchFromSpotify(
+    const response: SpotifyApi.ArtistSearchResponse = await fetchFromSpotify(
       `/search?type=artist,tracks&limit=5&q=${encodeURIComponent(artistQuery)}`,
     );
     if (!response?.artists?.items || response.artists.items.length < 1) {
