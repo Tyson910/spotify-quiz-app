@@ -129,5 +129,6 @@ function removeDuplicateTracks(
 export {
   fetchFromSpotify,
   findArtist,
+  getArtistTracks,
   getTopTracksFromArtist,
 };
