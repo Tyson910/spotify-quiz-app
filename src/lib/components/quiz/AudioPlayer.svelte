@@ -2,10 +2,12 @@
 	export let track: SpotifyApi.TrackObjectFull;
 	export let audioLink: SpotifyApi.TrackObjectFull['preview_url'];
 
-	// only allow two play clicks
-	let numberOfPlays = 0;
-	let isPlayingMusic: boolean = false;
+	// only allow one play clicks
+	let numberOfPlays = 1;
+	const maxNumOfPlays = 2;
 	let audioElement: HTMLAudioElement;
+
+	$: isPlayingMusic = audioElement?.paused;
 
 	function playMusic() {
 		audioElement.play();
@@ -14,14 +16,9 @@
 	}
 </script>
 
-<div class="flex flex-col items-center gap-y-12">
-	<div class="text-center prose max-w-none">
-		<h1>Can you guess the name of this song?</h1>
-		<p>You only get to play the song twice! Make each listen count</p>
-		<p>{track.name}</p>
-	</div>
+<div class="flex flex-col items-center ">
 	<audio
-		src={numberOfPlays < 2 ? audioLink : null}
+		src={numberOfPlays < maxNumOfPlays ? audioLink : null}
 		on:ended={() => (isPlayingMusic = false)}
 		on:pause={() => (isPlayingMusic = false)}
 		bind:this={audioElement}
@@ -29,10 +26,10 @@
 	<span class="isolate inline-flex gap-x-6">
 		<button
 			type="button"
-			on:click={playMusic}
-			disabled={numberOfPlays == 2}
-			class:cursor-not-allowed={numberOfPlays == 2}
-			class:bg-gray-50={numberOfPlays == 2}
+			on:click|once={playMusic}
+			disabled={numberOfPlays == maxNumOfPlays}
+			class:cursor-not-allowed={numberOfPlays == maxNumOfPlays}
+			class:bg-gray-50={numberOfPlays == maxNumOfPlays}
 			class:bg-gray-100={isPlayingMusic}
 			class:animate-pulse={isPlayingMusic}
 			class="inline-flex gap-x-3 items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -53,7 +50,7 @@
 					/>
 				</svg>
 				{isPlayingMusic ? 'Playing' : 'Play'}
-			{:else if numberOfPlays == 2}
+			{:else if numberOfPlays == maxNumOfPlays}
 				No more plays
 			{:else}
 				<svg
