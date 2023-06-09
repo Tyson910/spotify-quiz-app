@@ -59,7 +59,7 @@ async function findArtist(
   try {
     // %20tag:hipster add
     const response: SpotifyApi.ArtistSearchResponse = await fetchFromSpotify(
-      `/search?type=artist,tracks&limit=5&q=${encodeURIComponent(artistQuery)}`,
+      `/search?type=artist,track&limit=5&q=${encodeURIComponent(artistQuery)}`,
     );
     if (!response?.artists?.items || response.artists.items.length < 1) {
       throw new Error("Artist couldnt be found");
