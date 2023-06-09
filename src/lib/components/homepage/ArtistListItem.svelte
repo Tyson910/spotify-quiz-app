@@ -17,7 +17,7 @@
 	</div>
 	<div class="flex-shrink-0 group">
 		<a
-			href={`/solo-game/${artist.id}/${artist.name}`}
+			href={`/artistName/${artist.name}/id/${artist.id}`}
 			class={`py-2 px-5 inline-flex items-center 
 			 rounded-full border border-current hover:bg-current
 			 hover:transition-colors hover:duration-700
