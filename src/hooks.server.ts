@@ -2,7 +2,7 @@ import { requestRefreshToken, SPOTIFY_API_ENDPOINT } from "$lib/server/Spotify";
 import { error } from "@sveltejs/kit";
 export async function handleFetch({ request, fetch, event }) {
   if (!request.url.startsWith(SPOTIFY_API_ENDPOINT)) return fetch(request);
-  
+
   // do some fancy stuff with spotify api
   if (request.url.startsWith(SPOTIFY_API_ENDPOINT)) {
     const accessToken = event.cookies.get("access_token");
