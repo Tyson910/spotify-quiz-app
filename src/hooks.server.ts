@@ -7,7 +7,7 @@ export async function handleFetch({ request, fetch, event }) {
   if (request.url.startsWith(SPOTIFY_API_ENDPOINT)) {
     const accessToken = event.cookies.get("access_token");
     if (!accessToken) throw new Error("Couldn't find a valid access token!");
-
+    request.headers.append("Authorization", "Bearer " + accessToken);
     const response = await fetch(request);
     if (response.status == 200) return response;
 
