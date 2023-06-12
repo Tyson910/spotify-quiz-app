@@ -1,25 +1,29 @@
-import { findArtist } from "$lib/server/Spotify";
-import { fail } from "@sveltejs/kit";
-import type { Actions } from "./$types";
+import { redirect } from "@sveltejs/kit";
+import { CLIENT_ID } from "$env/static/private";
 
-export const actions: Actions = {
-  default: async (event) => {
-    const data = await event.request.formData();
-    const userSearchInput = data.get("artist-search");
-    if (
-      !userSearchInput ||
-      typeof userSearchInput != "string" &&
-        typeof userSearchInput != "number"
-    ) {
-      return fail(400, { userSearchInput, missing: true });
-    }
+export const actions = {
+  "log-in": async (event) => {
+    const state = crypto.randomUUID();
+    event.cookies.set('state', state, { path: "/" });
+    const scope = "user-read-recently-played";
 
-    try {
-      // TODO: find a way to cache recent/popular responses
-      const artists = await findArtist(userSearchInput.toString());
-      return { missing: false, artists };
-    } catch (error) {
-      console.log(error);
-    }
+    const spotifyCredOptions = {
+      response_type: "code",
+      client_id: CLIENT_ID,
+      show_dialog: 'true',
+      scope,
+      redirect_uri: "http://localhost:5173/confirmed",
+      state,
+    };
+    const queryParams = new URLSearchParams(spotifyCredOptions).toString();
+    throw redirect(
+      307,
+      "https://accounts.spotify.com/authorize?" +
+        queryParams,
+    );
+  },
+  logout: async (event) => {
+    event.cookies.delete('state');
+    event.cookies.delete('access_token');
   },
 };
