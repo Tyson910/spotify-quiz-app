@@ -4,17 +4,17 @@ Follow these step-by-step instructions to implement the required features for th
 
 ## Feature 1: User Authentication
 
-- [ ] **Description**: Implement user authentication to allow users to log in with their Spotify account.
+- [x] **Description**: Implement user authentication to allow users to log in with their Spotify account.
 
 **Steps**:
 
-1. [ ] Set up a Spotify Developer Account if you don't have one already.
-2. [ ] Create a new application in the Spotify Developer Dashboard to obtain the necessary API credentials (client ID and client secret).
-3. [ ] Set up the backend authentication server using a framework like Express.js or Flask.
-4. [ ] Implement the login route on the backend to initiate the Spotify authorization flow.
-5. [ ] Redirect the user to the Spotify Accounts service for authentication.
-6. [ ] Handle the callback route on the backend to exchange the authorization code for an access token.
-7. [ ] Store the access token securely for future API requests on behalf of the user.
+1. [x] Set up a Spotify Developer Account if you don't have one already.
+2. [x] Create a new application in the Spotify Developer Dashboard to obtain the necessary API credentials (client ID and client secret).
+3. [x] Set up the backend authentication server using a framework like Express.js or Flask.
+4. [x] Implement the login route on the backend to initiate the Spotify authorization flow.
+5. [x] Redirect the user to the Spotify Accounts service for authentication.
+6. [x] Handle the callback route on the backend to exchange the authorization code for an access token.
+7. [x] Store the access token securely for future API requests on behalf of the user.
 
 ## Feature 2: Fetch Recently Played Tracks
 
@@ -22,10 +22,12 @@ Follow these step-by-step instructions to implement the required features for th
 
 **Steps**:
 
-1. [ ] Use the user's access token obtained during authentication to make requests on behalf of the user.
-2. [ ] Implement the logic to fetch the recently played tracks from the Spotify Web API.
+1. [x] Use the user's access token obtained during authentication to make requests on behalf of the user.
+2. [x] Implement the logic to fetch the recently played tracks from the Spotify Web API.
 3. [ ] Handle any necessary pagination to retrieve all the tracks if the number of tracks exceeds the API's limit.
-4. [ ] Store the retrieved track data in a format suitable for further processing and visualization.
+4. [x] Get Audio Features for each recently played track
+5. [x] Merge the two datasets into one array
+6. [x] Store the retrieved track data in a format suitable for further processing and visualization.
 
 ## Feature 3: Popularity vs. Valence Bubble Chart
 
