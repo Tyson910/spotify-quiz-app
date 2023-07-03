@@ -1,5 +1,43 @@
 import { requestRefreshToken, SPOTIFY_API_ENDPOINT } from "$lib/server/Spotify";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
+
+/** @type {import('@sveltejs/kit').Handle} */
+export async function handle({ event, resolve }) {
+  // if (event.url.pathname.startsWith("/custom")) {
+  //   return new Response("custom response");
+  // }
+
+  // Do we have user accessToken or refreshToken?
+  const accessToken = event.cookies.get("access_token");
+  const refreshToken = event.cookies.get("refresh_token");
+
+  if (
+    // if no tokens
+    !accessToken &&
+    !refreshToken &&
+    // and not logging in
+    !event.url.pathname.startsWith("/confirmed") &&
+    // and not on home page
+    event.url.pathname !== "/"
+  ) {
+    // send back to homepage
+    throw redirect(307, "/?redirect=true");
+  }
+
+  if (!!accessToken && !!refreshToken) {
+    const userProfileResponse = await event.fetch(`${SPOTIFY_API_ENDPOINT}/me`);
+    const userProfile: SpotifyApi.CurrentUsersProfileResponse =
+      await userProfileResponse
+        .json();
+
+    event.locals.user = userProfile;
+  } else event.locals.user = null;
+
+  const response = await resolve(event);
+  return response;
+}
+
+/** @type {import('@sveltejs/kit').HandleFetch} */
 export async function handleFetch({ request, fetch, event }) {
   if (!request.url.startsWith(SPOTIFY_API_ENDPOINT)) return fetch(request);
 
