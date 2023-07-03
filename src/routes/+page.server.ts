@@ -1,5 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import { CLIENT_ID } from "$env/static/private";
+import type { Actions } from "@sveltejs/kit";
+
 
 export const actions = {
   "log-in": async (event) => {
@@ -26,4 +28,4 @@ export const actions = {
     event.cookies.delete('state');
     event.cookies.delete('access_token');
   },
-};
+} satisfies Actions;
